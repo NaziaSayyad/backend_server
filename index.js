@@ -12,6 +12,7 @@ app.use(
   })
 );
 app.use(express.json());
+
 app.use("/user", userRoute);
 app.use("/men", menRoute);
 app.use("/cart", cartRoute);
