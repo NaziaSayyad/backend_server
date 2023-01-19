@@ -1,10 +1,23 @@
 const express = require("express");
 const { BugsModel } = require("../Models/bug.model");
+const jwt = require("jsonwebtoken")
+
 const bugRoute = express.Router();
 
 bugRoute.get("/", async (req, res) => {
-    let data = await BugsModel.find({});
-    res.send(data);
+  const token = req.headers["authorization"];
+  try {
+    if (token) {
+      let data = await BugsModel.find({});
+      res.send(data);
+    }
+    else{
+      res.send("Please Login ")
+    }
+  } catch (e) {
+    res.send(e.message);
+  }
+    
   });
   
   bugRoute.post("/", async (req, res) => {
