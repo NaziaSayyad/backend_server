@@ -8,6 +8,7 @@ bugRoute.get("/", async (req, res) => {
   });
   
   bugRoute.post("/", async (req, res) => {
+    
     try {
         const { body } = req;
         const postData = new BugsModel(body);
@@ -18,5 +19,18 @@ bugRoute.get("/", async (req, res) => {
       }
 
   });
+
+  bugRoute.get("/:id", async (req,res) =>{
+    const {id} =req.params;
+      try{
+        await BugsModel.findByIdAndDelete({_id:id})
+      res.send({msg: "Deleted Successfully"})
+      }
+      catch(err){
+        res.send(err)
+      }
+  });
+   
+   
    
 module.exports = bugRoute;
