@@ -1,22 +1,24 @@
 const express = require("express");
+const  argon2  = require("argon2");
+
 
 const UserSchema = require("../Models/user.model");
 const jwt = require("jsonwebtoken");
 const userRouter = express.Router();
 
 userRouter.post("/signup", async (req, res) => {
-  console.log(req.body);
   try {
-    const { username, email, password } = req.body;
+    const {  email, password } = req.body;
+    const hash = await argon2.hash(password);
     let oldUser = await UserSchema.findOne({ email });
     if (oldUser) {
       return res.send({ msg: "already" });
     }
-    // bycrypt.hash(password, 4, async function (err, hash) {
-    const user = new UserSchema({ username, email, password });
+
+    const user = new UserSchema({  email, hash });
     await user.save();
     res.send({ msg: "success" });
-    // });
+    
   } catch (e) {
     res.send(e.message);
   }
@@ -27,15 +29,13 @@ userRouter.post("/login", async (req, res) => {
     const { email, password } = req.body;
     let user = await UserSchema.findOne({ email });
     if (user) {
-      let hashed_password = user.password;
-      // bycrypt.compare(password, hashed_password, function (err, result) {
-      if (hashed_password == password) {
+      let check_email = user.email;
+      if (check_email == email) {
         const token = jwt.sign({ userID: user._id }, "hush");
         res.send({ msg: "success", token: token });
       } else {
         res.send({ msg: "incorrect password" });
       }
-      // });
     } else {
       res.send({ msg: "email not resgisterd" });
     }
