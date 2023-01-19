@@ -33,7 +33,7 @@ bugRoute.get("/", async (req, res) => {
 
   });
 
-  bugRoute.get("/:id", async (req,res) =>{
+  bugRoute.delete("/:id", async (req,res) =>{
     const {id} =req.params;
       try{
         await BugsModel.findByIdAndDelete({_id:id})
