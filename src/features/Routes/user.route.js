@@ -10,12 +10,13 @@ userRouter.post("/signup", async (req, res) => {
   try {
     const {  email, password } = req.body;
     const hash = await argon2.hash(password);
+    console.log(hash);
     let oldUser = await UserSchema.findOne({ email });
     if (oldUser) {
       return res.send({ msg: "already" });
     }
 
-    const user = new UserSchema({  email, hash });
+    const user = new UserSchema({ email, password: hash });
     await user.save();
     res.send({ msg: "success" });
     

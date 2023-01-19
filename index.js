@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const connect = require("./src/config/db");
 const userRoute = require("./src/features/Routes/user.route");
+const bugRoute = require("./src/features/Routes/bug.route");
 const app = express();
 app.use(
   cors({
@@ -12,6 +13,7 @@ app.use(
 app.use(express.json());
 
 app.use("/user", userRoute);
+app.use("/bug", bugRoute);
 app.get("/", (req, res) => {
   res.send("Hello");
 });
