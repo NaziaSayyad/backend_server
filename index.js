@@ -14,6 +14,8 @@ app.use(express.json());
 
 app.use("/user", userRoute);
 app.use("/bug", bugRoute);
+app.use("/:id", bugRoute);
+
 app.get("/", (req, res) => {
   res.send("Hello");
 });
