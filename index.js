@@ -15,7 +15,6 @@ app.use(
 app.use(express.json());
 
 app.use("/user", userRoute);
-
 app.use("/calcbmi", CalculateBMIRoute);
 app.use("/calhistory", CalcHistory);
 

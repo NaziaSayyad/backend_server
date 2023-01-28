@@ -51,8 +51,19 @@ userRouter.post("/logout", async(req,res) =>{
 })
 
 userRouter.get("/", async(req,res) =>{
-  const user = await UserSchema.find();
-  res.status(201).send(user);
+  const token = req.headers["authorization"];
+  try {
+    if (token) {
+      const decoded = jwt.decode(token);
+      const find_id = decoded.userID;
+      let user = await UserSchema.findOne(
+        { _id: find_id });
+      res.send(user);
+    }
+  } catch (e) {
+    res.send(e.message);
+  }
+  
 })
 
 module.exports = userRouter;
