@@ -1,7 +1,5 @@
 const express = require("express");
 const  argon2  = require("argon2");
-
-
 const UserSchema = require("../Models/user.model");
 const jwt = require("jsonwebtoken");
 const userRouter = express.Router();
@@ -44,5 +42,10 @@ userRouter.post("/login", async (req, res) => {
     res.send(e.message);
   }
 });
+
+userRouter.get("/", async(req,res) =>{
+  const user = await UserSchema.find();
+  res.status(201).send(user);
+})
 
 module.exports = userRouter;
