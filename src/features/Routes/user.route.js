@@ -42,6 +42,13 @@ userRouter.post("/login", async (req, res) => {
     res.send(e.message);
   }
 });
+userRouter.post("/logout", async(req,res) =>{
+  const token = req.headers["authorization"];
+   if(token){
+    res.send("Logout Sucessfull")
+   }
+  
+})
 
 userRouter.get("/", async(req,res) =>{
   const user = await UserSchema.find();
