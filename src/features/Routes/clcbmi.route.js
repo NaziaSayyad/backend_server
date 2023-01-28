@@ -11,30 +11,28 @@ const CalculateBMIRoute = express.Router();
   
   CalculateBMIRoute.post("/", async (req, res) => {
     
-    try {
-        const {h, w} = req;
-        const cal = Number(Number(h) * Number(w));
-        const postData =  await new CalcBMIModel({height:h, weight : w, calculated : cal});
-        await postData.save();
-        res.status(201).send({h , w }); 
+    const { height, weight } = req.body;
+    console.log(height, weight);
+    let cal = Math.floor(weight / height);
+    cal = parseFloat(cal).toFixed(2);
+    const postData =  await new CalcBMIModel({height,weight, calculated : cal});
+    await postData.save();
+    res.send(cal);
+    // try {
+    //     const {h, w} = req;
+    //     const cal = (h / w);
+    //     console.log(cal);
+    //     cal = parseFloat(cal).toFixed(2);
+        // const postData =  await new CalcBMIModel({height:h, weight : w, calculated : cal});
+        // await postData.save();
+    //     res.status(201).send(cal); 
 
-      } catch (e) {
-        res.send(e.message);
-      }
+    //   } catch (e) {
+    //     res.send(e.message);
+    //   }
 
   });
 
-  CalculateBMIRoute.delete("/:id", async (req,res) =>{
-    const {id} =req.params;
-      try{
-        await BugsModel.findByIdAndDelete({_id:id})
-      res.send({msg: "Deleted Successfully"})
-      }
-      catch(err){
-        res.send(err)
-      }
-  });
-   
-   
+  
    
 module.exports = CalculateBMIRoute;
